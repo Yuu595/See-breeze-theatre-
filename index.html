@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sea Breeze Theatre — Choose Your Seats</title>
+  <meta name="description" content="Interactive seat selection for the Sea Breeze Theatre.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="sea-backdrop" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="cloud cloud--1"></div>
+    <div class="cloud cloud--2"></div>
+    <div class="cloud cloud--3"></div>
+    <svg class="gull gull--1" viewBox="0 0 24 10"><path d="M1 7 Q6 1 12 7 Q18 1 23 7"/></svg>
+    <svg class="gull gull--2" viewBox="0 0 24 10"><path d="M1 7 Q6 1 12 7 Q18 1 23 7"/></svg>
+    <svg class="gull gull--3" viewBox="0 0 24 10"><path d="M1 7 Q6 1 12 7 Q18 1 23 7"/></svg>
+    <svg class="waves" viewBox="0 24 150 28" preserveAspectRatio="none">
+      <defs>
+        <path id="wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"/>
+      </defs>
+      <g class="wave-layers">
+        <use href="#wave" x="48" y="0" fill="rgba(34, 179, 196, 0.22)"/>
+        <use href="#wave" x="48" y="3" fill="rgba(11, 127, 171, 0.18)"/>
+        <use href="#wave" x="48" y="5" fill="rgba(11, 127, 171, 0.14)"/>
+        <use href="#wave" x="48" y="7" fill="rgba(15, 61, 94, 0.16)"/>
+      </g>
+    </svg>
+  </div>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2M2 13c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2M2 18c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/></svg>
+      </span>
+      <div>
+        <h1>Sea Breeze Theatre</h1>
+        <p class="event">Sunset Symphony Night · Sat 19 Dec 2026 · 19:00</p>
+      </div>
+    </div>
+    <a class="header-cart" href="#cart-panel">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 5v12" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2 2"/></svg>
+      <span><span id="header-cart-count">0 tickets</span> · <strong id="header-cart-total">0 AZN</strong></span>
+    </a>
+  </header>
+
+  <main class="layout">
+   
+    <section class="map-panel panel" aria-labelledby="map-heading">
+      <div class="map-toolbar">
+        <div>
+          <h2 id="map-heading">Choose your seats</h2>
+          <p class="hint"><span id="seat-count">0</span> seats · click a seat to see its details</p>
+        </div>
+        <div class="legends">
+          <ul class="legend" id="price-legend" aria-label="Price categories"></ul>
+          <ul class="legend legend--states" aria-label="Seat states">
+            <li class="legend-item"><span class="seat seat--demo seat--demo-available" data-status="available"></span>Available</li>
+            <li class="legend-item"><span class="seat seat--demo seat--demo-available is-inspected" data-status="available"></span>Inspecting</li>
+            <li class="legend-item"><span class="seat seat--demo" data-status="in-cart"></span>In cart</li>
+            <li class="legend-item"><span class="seat seat--demo" data-status="unavailable"></span>Unavailable</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="map-viewport" id="map-viewport" tabindex="0"
+           aria-label="Venue map. Arrow keys move the view, plus and minus zoom, 0 resets.">
+        <div class="map-world" id="map-world"></div>
+      </div>
+
+      <div class="map-controls" id="map-controls" role="toolbar" aria-label="Map controls">
+        <div class="ctrl-group" aria-label="Zoom">
+          <button type="button" class="ctrl" data-action="zoom-out" aria-label="Zoom out" title="Zoom out (−)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
+          </button>
+          <span class="zoom-level" id="zoom-level" aria-live="polite">100%</span>
+          <button type="button" class="ctrl" data-action="zoom-in" aria-label="Zoom in" title="Zoom in (+)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+        </div>
+        <div class="ctrl-group" aria-label="Move">
+          <button type="button" class="ctrl" data-action="left" aria-label="Move left" title="Move left (←)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button type="button" class="ctrl" data-action="up" aria-label="Move up" title="Move up (↑)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+          </button>
+          <button type="button" class="ctrl" data-action="down" aria-label="Move down" title="Move down (↓)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <button type="button" class="ctrl" data-action="right" aria-label="Move right" title="Move right (→)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <button type="button" class="ctrl ctrl-reset" data-action="reset" title="Reset and centre the view (0)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg>
+          Reset view
+        </button>
+        <p class="map-tip">Scroll to zoom · drag to move</p>
+      </div>
+    </section>
+
+    <section class="details-panel panel" id="details-panel" aria-labelledby="details-heading">
+      <div class="panel-head">
+        <h2 id="details-heading">Seat details</h2>
+        <button type="button" class="icon-btn" id="details-close" aria-label="Close seat details" title="Close (Esc)">×</button>
+      </div>
+
+      <p class="empty" id="details-empty">
+        Click any seat on the map to inspect it. Nothing is added to your cart until you press
+        <strong>Add to cart</strong>.
+      </p>
+
+      <div class="details-body" id="details-body" hidden>
+        <div class="details-top">
+          <p class="details-category"><span class="chip" id="d-chip"></span><span id="d-category"></span></p>
+          <p class="details-price" id="d-price"></p>
+        </div>
+        <dl class="details-grid">
+          <div><dt>Section</dt><dd id="d-section"></dd></div>
+          <div><dt>Row</dt><dd id="d-row"></dd></div>
+          <div><dt>Seat</dt><dd id="d-seat"></dd></div>
+          <div><dt>Seat ID</dt><dd id="d-id"></dd></div>
+          <div class="details-status"><dt>Status</dt><dd id="d-status"></dd></div>
+        </dl>
+        <p class="note" id="d-note"></p>
+        <div class="details-actions">
+          <button type="button" class="btn btn-primary" id="add-to-cart">Add to cart</button>
+          <button type="button" class="btn btn-secondary" id="details-remove" hidden>Remove from cart</button>
+        </div>
+      </div>
+    </section>
+
+   
+    <section class="cart-panel panel" id="cart-panel" aria-labelledby="cart-heading">
+      <div class="panel-head">
+        <h2 id="cart-heading">Your cart</h2>
+        <button type="button" class="link-btn" id="clear-cart" hidden>Clear all</button>
+      </div>
+      <p class="empty" id="cart-empty">Your cart is empty.</p>
+      <ul class="cart-list" id="cart-list" aria-live="polite"></ul>
+      <div class="cart-total">
+        <span>Total · <span id="cart-count">0 tickets</span></span>
+        <strong id="cart-total">0 AZN</strong>
+      </div>
+      <p class="small">Your cart is saved in this browser, so it is still here after a refresh.</p>
+    </section>
+  </main>
+
+
+  <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
+
+  <script src="js/venue-data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/map-view.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
